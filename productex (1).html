@@ -1,0 +1,1299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRODUCTEX — Producción Integral de Indumentaria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #000000;
+      --grey: #2e2e2e;
+      --grey-light: #3e3e3e;
+      --white: #ffffff;
+      --white-dim: rgba(255,255,255,0.6);
+      --white-faint: rgba(255,255,255,0.08);
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Montserrat', sans-serif;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --transition: all 0.5s var(--ease);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--grey); }
+
+    .container { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+    .tag {
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.4);
+      font-weight: 500;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-top: 16px;
+    }
+    .section-title em { font-style: italic; font-weight: 300; }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s var(--ease), transform 1s var(--ease);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+
+    /* ─── NAVBAR ─── */
+    #navbar {
+      position: fixed; width: 100%; top: 0; z-index: 1000;
+      padding: 28px 0;
+      transition: background 0.6s var(--ease), padding 0.4s var(--ease), border-color 0.6s var(--ease);
+      border-bottom: 1px solid transparent;
+    }
+    #navbar.scrolled {
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 16px 0;
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+    .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; }
+    .logo { font-family: var(--font-body); font-weight: 600; letter-spacing: 6px; color: var(--white); text-decoration: none; font-size: 1.05rem; }
+    .nav-actions { display: flex; align-items: center; gap: 40px; }
+    .nav-links { display: flex; list-style: none; gap: 36px; align-items: center; }
+    .nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 2px; font-weight: 400; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--white); }
+    .nav-cta {
+      border: 1px solid rgba(255,255,255,0.4) !important;
+      padding: 10px 22px !important;
+      transition: var(--transition) !important;
+      color: var(--white) !important;
+      cursor: pointer;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .nav-cta:hover { background: var(--white) !important; color: var(--black) !important; border-color: var(--white) !important; }
+
+    .burger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; }
+    .burger span { display: block; width: 24px; height: 1px; background: var(--white); transition: var(--transition); }
+    .burger.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .burger.active span:nth-child(2) { opacity: 0; }
+    .burger.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .mobile-menu { display: none; position: fixed; inset: 0; background: var(--black); z-index: 999; flex-direction: column; justify-content: center; align-items: center; gap: 40px; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--font-display); font-size: clamp(2rem, 8vw, 3rem); color: var(--white); text-decoration: none; font-weight: 300; letter-spacing: 2px; transition: opacity 0.3s; }
+    .mobile-menu a:hover { opacity: 0.5; }
+    .mobile-menu button { font-family: var(--font-display); font-size: clamp(2rem, 8vw, 3rem); color: var(--white); text-decoration: none; font-weight: 300; letter-spacing: 2px; transition: opacity 0.3s; background: none; border: none; cursor: pointer; }
+    .mobile-menu button:hover { opacity: 0.5; }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh; min-height: 700px;
+      display: flex; align-items: center;
+      background: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2000&auto=format&fit=crop') center / cover no-repeat;
+      position: relative; padding: 0 5%;
+    }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 55%, rgba(0,0,0,0.2) 100%); }
+    .hero-content { position: relative; z-index: 10; max-width: 680px; }
+    .hero-content h1 { font-family: var(--font-display); font-size: clamp(3.2rem, 8vw, 6rem); line-height: 0.95; margin: 20px 0 24px; font-weight: 300; letter-spacing: -0.5px; }
+    .hero-content h1 em { font-style: italic; display: block; }
+    .hero-content p { font-size: 0.85rem; line-height: 1.9; color: rgba(255,255,255,0.65); max-width: 480px; font-weight: 300; letter-spacing: 0.3px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 40px; }
+
+    .btn { display: inline-flex; align-items: center; gap: 10px; padding: 17px 36px; text-decoration: none; font-weight: 500; font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; transition: var(--transition); font-family: var(--font-body); cursor: pointer; border: none; }
+    .btn-white { background: var(--white); color: var(--black); }
+    .btn-white:hover { background: #ddd; }
+    .btn-outline { border: 1px solid rgba(255,255,255,0.4); color: var(--white); background: transparent; }
+    .btn-outline:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+
+    /* ─── MARQUEE ─── */
+    .marquee-strip { background: var(--grey); border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06); padding: 16px 0; overflow: hidden; white-space: nowrap; }
+    .marquee-track { display: inline-flex; gap: 60px; animation: marquee 30s linear infinite; }
+    .marquee-track span { font-size: 0.65rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+    .marquee-track span.dot { color: rgba(255,255,255,0.15); letter-spacing: 0; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ─── SERVICES ─── */
+    .services { padding: 160px 0; background: var(--black); }
+    .section-header { max-width: 580px; margin-bottom: 80px; }
+    .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border: 1px solid rgba(255,255,255,0.07); }
+    .service-card { padding: 54px 44px; background: var(--black); border-right: 1px solid rgba(255,255,255,0.07); transition: background 0.4s var(--ease); position: relative; overflow: hidden; }
+    .service-card:last-child { border-right: none; }
+    .service-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 1px; background: var(--white); transition: width 0.6s var(--ease); }
+    .service-card:hover { background: var(--grey); }
+    .service-card:hover::after { width: 100%; }
+    .service-card .num { font-family: var(--font-display); font-size: 3rem; color: rgba(255,255,255,0.1); line-height: 1; margin-bottom: 28px; }
+    .service-card h3 { font-family: var(--font-display); font-size: 1.5rem; font-weight: 400; margin-bottom: 14px; letter-spacing: 0.5px; }
+    .service-card p { font-size: 0.78rem; color: rgba(255,255,255,0.5); line-height: 1.9; font-weight: 300; }
+
+    /* ─── NOSOTROS ─── */
+    #nosotros { padding: 160px 0; background: var(--grey); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+    .about-image { position: relative; aspect-ratio: 4/5; overflow: hidden; }
+    .about-image img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%); transition: transform 0.8s var(--ease); }
+    .about-image:hover img { transform: scale(1.04); }
+    .about-image-frame { position: absolute; inset: -12px; border: 1px solid rgba(255,255,255,0.12); pointer-events: none; }
+    .about-content .tag { margin-bottom: 20px; }
+    .about-content p { font-size: 0.82rem; color: rgba(255,255,255,0.6); line-height: 2; font-weight: 300; margin-bottom: 18px; }
+    .stats-row { display: flex; gap: 48px; margin-top: 52px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .stat-item .stat-num { font-family: var(--font-display); font-size: 2.8rem; font-weight: 300; line-height: 1; display: block; }
+    .stat-item .stat-label { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 6px; }
+
+    /* ─── GALLERY ─── */
+    .gallery-strip { display: grid; grid-template-columns: repeat(4, 1fr); height: 320px; }
+    .gallery-item { overflow: hidden; position: relative; }
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(30%) brightness(0.7); transition: transform 0.8s var(--ease), filter 0.5s; }
+    .gallery-item:hover img { transform: scale(1.08); filter: grayscale(0%) brightness(0.85); }
+
+    /* ─── CTA ─── */
+    .cta-section { padding: 160px 0; background: var(--black); position: relative; overflow: hidden; }
+    .cta-section::before { content: 'PRODUCTEX'; position: absolute; font-family: var(--font-display); font-size: clamp(8rem, 20vw, 18rem); font-weight: 300; color: rgba(255,255,255,0.025); white-space: nowrap; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; letter-spacing: -5px; }
+    .cta-box { position: relative; z-index: 1; text-align: center; max-width: 680px; margin: 0 auto; }
+    .cta-box h2 { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.2rem); font-weight: 300; line-height: 1.1; margin-bottom: 20px; }
+    .cta-box h2 em { font-style: italic; }
+    .cta-box p { font-size: 0.82rem; color: rgba(255,255,255,0.45); line-height: 2; font-weight: 300; margin-bottom: 44px; letter-spacing: 0.3px; }
+    .cta-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+
+    /* ─── MODAL OVERLAY ─── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal {
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.1);
+      width: 100%;
+      max-width: 680px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalIn 0.5s var(--ease) forwards;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .modal::-webkit-scrollbar { width: 3px; }
+    .modal::-webkit-scrollbar-track { background: #111; }
+    .modal::-webkit-scrollbar-thumb { background: #333; }
+
+    .modal-header {
+      padding: 44px 52px 0;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 20px; right: 24px;
+      background: none; border: none;
+      color: rgba(255,255,255,0.4);
+      cursor: pointer;
+      font-size: 1.4rem;
+      line-height: 1;
+      transition: color 0.3s;
+      padding: 4px 8px;
+    }
+    .modal-close:hover { color: var(--white); }
+    .modal-header .tag { margin-bottom: 12px; }
+    .modal-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+    .modal-header h2 em { font-style: italic; }
+    .modal-header p {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    /* ─── FORM ─── */
+    .onboarding-form { padding: 36px 52px 52px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .field {
+      margin-bottom: 24px;
+    }
+    .field label {
+      display: block;
+      font-size: 0.62rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .field input,
+    .field textarea,
+    .field select {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      font-weight: 300;
+      padding: 14px 18px;
+      outline: none;
+      transition: border-color 0.3s, background 0.3s;
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: 0;
+    }
+    .field select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,0.3)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      padding-right: 40px;
+      cursor: pointer;
+    }
+    .field select option { background: #1a1a1a; color: var(--white); }
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.06);
+    }
+    .field input::placeholder,
+    .field textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .field textarea { resize: vertical; min-height: 100px; line-height: 1.8; }
+
+    .field-note {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.2);
+      margin-top: 6px;
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .form-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      margin: 8px 0 28px;
+    }
+    .form-section-label {
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .datetime-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* availability grid */
+    .avail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .avail-chip {
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 12px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+      font-size: 0.68rem;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.45);
+      user-select: none;
+      font-weight: 400;
+    }
+    .avail-chip:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); }
+    .avail-chip.selected { border-color: var(--white); color: var(--white); background: rgba(255,255,255,0.06); }
+
+    .avail-note {
+      margin-top: 10px;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.25);
+      font-weight: 300;
+    }
+
+    .form-submit {
+      margin-top: 36px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn-submit {
+      background: var(--white);
+      color: var(--black);
+      padding: 17px 44px;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 500;
+      font-family: var(--font-body);
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-submit:hover { background: #ddd; }
+    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+    .submit-note {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.2);
+      font-weight: 300;
+      line-height: 1.6;
+    }
+
+    /* ─── SUCCESS STATE ─── */
+    .form-success {
+      display: none;
+      padding: 60px 52px;
+      text-align: center;
+    }
+    .form-success.show { display: block; }
+    .success-icon {
+      width: 64px; height: 64px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 28px;
+      animation: successPop 0.6s var(--ease);
+    }
+    @keyframes successPop {
+      from { transform: scale(0.6); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .success-icon svg { color: rgba(255,255,255,0.7); }
+    .form-success h3 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 300; margin-bottom: 12px; }
+    .form-success h3 em { font-style: italic; }
+    .form-success p { font-size: 0.8rem; color: rgba(255,255,255,0.45); font-weight: 300; line-height: 2; max-width: 380px; margin: 0 auto; }
+
+    /* ─── ERROR ─── */
+    .field.error input,
+    .field.error textarea,
+    .field.error select { border-color: rgba(255,100,100,0.5); }
+    .field .error-msg { font-size: 0.65rem; color: rgba(255,120,120,0.8); margin-top: 5px; display: none; }
+    .field.error .error-msg { display: block; }
+
+    /* ─── FOOTER ─── */
+    .footer { background: var(--grey); border-top: 1px solid rgba(255,255,255,0.07); padding: 80px 0 0; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; padding-bottom: 60px; }
+    .footer-brand p { font-size: 0.78rem; color: rgba(255,255,255,0.4); line-height: 2; font-weight: 300; margin-top: 16px; max-width: 280px; }
+    .footer-brand .logo { letter-spacing: 5px; font-size: 1rem; }
+    .footer-links h4 { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 20px; font-weight: 500; }
+    .footer-links a, .footer-links button { display: block; color: rgba(255,255,255,0.55); text-decoration: none; font-size: 0.8rem; font-weight: 300; margin-bottom: 10px; transition: color 0.3s; background: none; border: none; cursor: pointer; font-family: var(--font-body); padding: 0; text-align: left; }
+    .footer-links a:hover, .footer-links button:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.06); padding: 24px 0; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom p { font-size: 0.68rem; color: rgba(255,255,255,0.25); letter-spacing: 1px; }
+
+    /* ─── PROCESO / CÓMO TRABAJAMOS ─── */
+    #proceso {
+      padding: 160px 0;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Faint vertical line decoration */
+    #proceso::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05) 20%, rgba(255,255,255,0.05) 80%, transparent);
+      pointer-events: none;
+    }
+
+    .proceso-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 100px;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .proceso-header-left { max-width: 520px; }
+    .proceso-header-right {
+      max-width: 340px;
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.35);
+      line-height: 2;
+      font-weight: 300;
+    }
+
+    /* ── 4 PASOS (timeline horizontal) ── */
+    .proceso-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      border: 1px solid rgba(255,255,255,0.07);
+      margin-bottom: 100px;
+      position: relative;
+    }
+
+    /* connecting line across top */
+    .proceso-steps::before {
+      content: '';
+      position: absolute;
+      top: 52px;
+      left: calc(12.5% + 20px);
+      right: calc(12.5% + 20px);
+      height: 1px;
+      background: linear-gradient(to right, rgba(255,255,255,0.15), rgba(255,255,255,0.07));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .step-card {
+      padding: 44px 36px 40px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      position: relative;
+      transition: background 0.4s var(--ease);
+      cursor: default;
+    }
+    .step-card:last-child { border-right: none; }
+    .step-card:hover { background: rgba(255,255,255,0.03); }
+
+    .step-circle {
+      width: 44px; height: 44px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+      transition: border-color 0.4s, background 0.4s;
+      background: var(--black);
+    }
+    .step-card:hover .step-circle {
+      border-color: rgba(255,255,255,0.6);
+      background: rgba(255,255,255,0.06);
+    }
+    .step-circle span {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+    }
+    .step-card:hover .step-circle span { color: var(--white); }
+
+    .step-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+    .step-card p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 1.9;
+      font-weight: 300;
+    }
+    .step-tag {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 0.6rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 5px 10px;
+    }
+
+    /* ── CAPACIDADES (proceso textil detallado) ── */
+    .proceso-capabilities {
+      margin-bottom: 80px;
+    }
+    .capabilities-label {
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 40px;
+      display: block;
+    }
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.06);
+    }
+    .cap-item {
+      background: var(--black);
+      padding: 36px 32px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      transition: background 0.3s var(--ease);
+      /* GTM-friendly: each item has data-process-step */
+    }
+    .cap-item:hover { background: rgba(255,255,255,0.03); }
+    .cap-icon {
+      width: 36px; height: 36px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+    .cap-item:hover .cap-icon { opacity: 0.9; }
+    .cap-icon svg { width: 20px; height: 20px; color: var(--white); }
+    .cap-text h4 {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+    .cap-text p {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.85;
+      font-weight: 300;
+    }
+
+    /* ── PROCESO BOTTOM BANNER ── */
+    .proceso-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      padding: 40px 48px;
+      border: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+    }
+    .proceso-bottom-copy h4 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 300;
+      margin-bottom: 6px;
+    }
+    .proceso-bottom-copy h4 em { font-style: italic; }
+    .proceso-bottom-copy p {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.35);
+      font-weight: 300;
+    }
+
+    /* ─── RESPONSIVE proceso ─── */
+    @media (max-width: 1024px) {
+      .proceso-steps { grid-template-columns: repeat(2, 1fr); }
+      .step-card:nth-child(2) { border-right: none; }
+      .step-card:nth-child(1),
+      .step-card:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .proceso-steps::before { display: none; }
+      .capabilities-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      #proceso { padding: 100px 0; }
+      .proceso-steps { grid-template-columns: 1fr; }
+      .step-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .step-card:nth-child(1),
+      .step-card:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .capabilities-grid { grid-template-columns: 1fr; }
+      .proceso-header { flex-direction: column; align-items: flex-start; }
+      .proceso-bottom { flex-direction: column; align-items: flex-start; padding: 32px 28px; }
+      #proceso::before { display: none; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .service-card:nth-child(2) { border-right: none; }
+      .service-card:nth-child(3) { border-top: 1px solid rgba(255,255,255,0.07); }
+      .gallery-strip { grid-template-columns: repeat(2, 1fr); height: 400px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .footer-brand { grid-column: 1 / -1; }
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 24px; }
+      .nav-actions .nav-links { display: none; }
+      .burger { display: flex; }
+      .hero-content h1 { font-size: 3.4rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .service-card:last-child { border-bottom: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 50px; }
+      .about-image { aspect-ratio: 16/9; }
+      .stats-row { gap: 32px; }
+      .gallery-strip { grid-template-columns: 1fr 1fr; height: 300px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+      .btn { width: 100%; justify-content: center; }
+      .hero-actions { flex-direction: column; }
+      .cta-actions { flex-direction: column; align-items: center; }
+      .cta-actions .btn { width: auto; min-width: 260px; }
+      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .form-row { grid-template-columns: 1fr; }
+      .datetime-row { grid-template-columns: 1fr; }
+      .modal-header { padding: 36px 28px 0; }
+      .onboarding-form { padding: 28px 28px 40px; }
+      .form-success { padding: 48px 28px; }
+      .avail-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .services { padding: 100px 0; }
+      #nosotros { padding: 100px 0; }
+      .cta-section { padding: 100px 0; }
+      .gallery-strip { height: 200px; }
+      .avail-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="#home" class="logo">PRODUCTEX</a>
+      <div class="nav-actions">
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#proceso">Cómo trabajamos</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><button class="nav-cta" onclick="openModal()">Agendar Reunión</button></li>
+        </ul>
+        <button class="burger" id="burger" aria-label="Menú">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="#servicios" class="mobile-link">Servicios</a>
+    <a href="#proceso" class="mobile-link">Cómo trabajamos</a>
+    <a href="#nosotros" class="mobile-link">Nosotros</a>
+    <a href="https://api.whatsapp.com/send/?phone=5491154731466&text&type=phone_number&app_absent=0" target="_blank">WhatsApp</a>
+    <button onclick="closeMobileAndOpenModal()">Agendar Reunión</button>
+  </div>
+
+  <!-- MODAL ONBOARDING FORM -->
+  <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+    <div class="modal" id="modal">
+      <div id="form-container">
+        <div class="modal-header">
+          <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>
+          <span class="tag">Primer Reunión · Onboarding</span>
+          <h2>Contanos sobre <em>tu proyecto.</em></h2>
+          <p>Completá el formulario y nuestro equipo se pondrá en contacto para confirmar la reunión.</p>
+        </div>
+
+        <div class="onboarding-form">
+
+          <!-- Datos personales -->
+          <span class="form-section-label">Datos de contacto</span>
+          <div class="form-row">
+            <div class="field" id="field-nombre">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" placeholder="Ej: Martín" autocomplete="given-name" />
+              <span class="error-msg">Este campo es requerido.</span>
+            </div>
+            <div class="field" id="field-apellido">
+              <label for="apellido">Apellido</label>
+              <input type="text" id="apellido" placeholder="Ej: González" autocomplete="family-name" />
+              <span class="error-msg">Este campo es requerido.</span>
+            </div>
+          </div>
+
+          <div class="field" id="field-mail">
+            <label for="mail">Correo electrónico</label>
+            <input type="email" id="mail" placeholder="tucorreo@mail.com" autocomplete="email" />
+            <span class="error-msg">Ingresá un correo válido.</span>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- Preguntas cualitativas -->
+          <span class="form-section-label">Tu marca & motivación</span>
+
+          <div class="field" id="field-marca">
+            <label for="marca">Nombre de tu marca / emprendimiento</label>
+            <input type="text" id="marca" placeholder="Ej: Studio Mora" />
+            <span class="error-msg">Este campo es requerido.</span>
+          </div>
+
+          <div class="field" id="field-decision">
+            <label for="decision">¿Por qué tomaste la decisión de trabajar con nosotros?</label>
+            <textarea id="decision" placeholder="Contanos qué te llevó a contactar a PRODUCTEX..."></textarea>
+            <span class="error-msg">Este campo es requerido.</span>
+          </div>
+
+          <div class="field" id="field-problema">
+            <label for="problema">¿Cuál es el problema #1 que te impidió lograrlo hasta ahora?</label>
+            <textarea id="problema" placeholder="Ej: No encontré un taller que cumpla con los tiempos de entrega, falta de escala, calidad inconsistente..."></textarea>
+            <span class="error-msg">Este campo es requerido.</span>
+          </div>
+
+          <hr class="form-divider">
+
+          <!-- Disponibilidad -->
+          <span class="form-section-label">¿Cuándo podés tener la reunión?</span>
+
+          <div class="field">
+            <label>Seleccioná los días que te quedan bien</label>
+            <div class="avail-grid" id="avail-days">
+              <div class="avail-chip" data-val="Lunes">Lunes</div>
+              <div class="avail-chip" data-val="Martes">Martes</div>
+              <div class="avail-chip" data-val="Miércoles">Miércoles</div>
+              <div class="avail-chip" data-val="Jueves">Jueves</div>
+              <div class="avail-chip" data-val="Viernes">Viernes</div>
+              <div class="avail-chip" data-val="Sábado">Sábado</div>
+            </div>
+            <p class="avail-note">Podés elegir más de uno.</p>
+          </div>
+
+          <div class="field" id="field-franja">
+            <label for="franja">Franja horaria preferida</label>
+            <select id="franja">
+              <option value="" disabled selected>Seleccioná una opción</option>
+              <option value="Mañana (9:00 – 12:00)">Mañana (9:00 – 12:00)</option>
+              <option value="Mediodía (12:00 – 15:00)">Mediodía (12:00 – 15:00)</option>
+              <option value="Tarde (15:00 – 18:00)">Tarde (15:00 – 18:00)</option>
+              <option value="Noche (18:00 – 20:00)">Noche (18:00 – 20:00)</option>
+            </select>
+            <span class="error-msg">Seleccioná una franja horaria.</span>
+          </div>
+
+          <div class="field">
+            <label for="notas">¿Algo más que quieras contarnos? <span style="opacity:0.5">(opcional)</span></label>
+            <textarea id="notas" placeholder="Consultas, detalles del proyecto, cantidad estimada de prendas..."></textarea>
+          </div>
+
+          <div class="form-submit">
+            <button class="btn-submit" id="submit-btn" onclick="submitForm()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              Enviar solicitud
+            </button>
+            <p class="submit-note">Te contactamos en menos de 24 hs para confirmar.</p>
+          </div>
+
+        </div><!-- /.onboarding-form -->
+      </div><!-- /#form-container -->
+
+      <!-- SUCCESS STATE -->
+      <div class="form-success" id="form-success">
+        <div class="success-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h3>¡Todo <em>listo!</em></h3>
+        <p>Recibimos tu solicitud. Nuestro equipo se pondrá en contacto a la brevedad para confirmar la fecha y hora de la reunión.</p>
+      </div>
+
+    </div><!-- /.modal -->
+  </div><!-- /.modal-overlay -->
+
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="tag reveal">Premium Garment Manufacturing</span>
+      <h1 class="reveal reveal-delay-1">Tu marca.<br /><em>Nuestra producción.</em></h1>
+      <p class="reveal reveal-delay-2">Soluciones integrales de confección para marcas que buscan excelencia, puntualidad y calidad superior en cada puntada.</p>
+      <div class="hero-actions reveal reveal-delay-3">
+        <a href="https://api.whatsapp.com/send/?phone=5491154731466&text&type=phone_number&app_absent=0" target="_blank" class="btn btn-white">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Contactar por WhatsApp
+        </a>
+        <button class="btn btn-outline" onclick="openModal()">Agendar Reunión</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip">
+    <div class="marquee-track">
+      <span>Desarrollo de Moldes</span><span class="dot">·</span>
+      <span>Corte & Confección</span><span class="dot">·</span>
+      <span>Control de Calidad</span><span class="dot">·</span>
+      <span>Etiquetado & Packaging</span><span class="dot">·</span>
+      <span>Producción Premium</span><span class="dot">·</span>
+      <span>Buenos Aires, Argentina</span><span class="dot">·</span>
+      <span>Desarrollo de Moldes</span><span class="dot">·</span>
+      <span>Corte & Confección</span><span class="dot">·</span>
+      <span>Control de Calidad</span><span class="dot">·</span>
+      <span>Etiquetado & Packaging</span><span class="dot">·</span>
+      <span>Producción Premium</span><span class="dot">·</span>
+      <span>Buenos Aires, Argentina</span><span class="dot">·</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="servicios" class="services">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="tag">Nuestros Servicios</span>
+        <h2 class="section-title">Producción de <em>principio a fin.</em></h2>
+      </div>
+      <div class="services-grid">
+        <div class="service-card reveal">
+          <div class="num">01</div>
+          <h3>Desarrollo & Moldería</h3>
+          <p>Transformamos tus ideas en moldes técnicos precisos y escalados perfectos. Cada patrón es desarrollado con rigor artesanal y precisión industrial.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-1">
+          <div class="num">02</div>
+          <h3>Corte & Confección</h3>
+          <p>Maquinaria de última generación y mano de obra experta para producciones impecables. Capacidad para pequeñas tiradas y grandes volúmenes.</p>
+        </div>
+        <div class="service-card reveal reveal-delay-2">
+          <div class="num">03</div>
+          <h3>Producto Terminado</h3>
+          <p>Control de calidad exhaustivo, etiquetado personalizado y packaging profesional. Listo para el consumidor final o distribución.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <div class="gallery-strip">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=800&auto=format&fit=crop" alt="Taller de costura" loading="lazy" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=800&auto=format&fit=crop" alt="Textura de tela" loading="lazy" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1565084888279-aca607ecce0c?q=80&w=800&auto=format&fit=crop" alt="Confección" loading="lazy" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?q=80&w=800&auto=format&fit=crop" alt="Detalles de costura" loading="lazy" />
+    </div>
+  </div>
+
+  <!-- NOSOTROS -->
+  <!--
+    GTM GUIDE — sección #proceso
+    ─────────────────────────────────────────────────────────────────────
+    Cada elemento clave tiene un atributo data-gtm-* para facilitar la
+    configuración de triggers y variables en Google Tag Manager:
+
+    SECTION VISIBILITY
+      Trigger: Element Visibility → CSS Selector: #proceso
+      → Evento sugerido: "seccion_proceso_visible"
+
+    PASO VISTO (scroll into view)
+      Trigger: Element Visibility → CSS Selector: [data-gtm-step]
+      → Variable: {{- Click Element}} → Attribute: data-gtm-step
+      → Evento sugerido: "paso_proceso_visible"
+
+    CAPACIDAD VISTA
+      Trigger: Element Visibility → CSS Selector: [data-gtm-capability]
+      → Variable: data-gtm-capability
+      → Evento sugerido: "capacidad_proceso_visible"
+
+    CTA dentro de sección
+      Trigger: Click → CSS Selector: [data-gtm-cta="proceso_agendar"]
+      → Evento sugerido: "cta_proceso_click"
+    ─────────────────────────────────────────────────────────────────────
+  -->
+  <section id="proceso" data-gtm-section="como_trabajamos">
+    <div class="container">
+
+      <div class="proceso-header">
+        <div class="proceso-header-left reveal">
+          <span class="tag">Cómo trabajamos</span>
+          <h2 class="section-title">4 pasos hacia tu <em>prenda terminada.</em></h2>
+        </div>
+        <p class="proceso-header-right reveal reveal-delay-1">
+          Nos encargamos de absolutamente todos los procesos de fabricación y te entregamos las prendas planchadas y embolsadas, listas para que las vendas. Mínimo 100 unidades por modelo.
+        </p>
+      </div>
+
+      <!-- 4 PASOS -->
+      <div class="proceso-steps reveal">
+
+        <div class="step-card" data-gtm-step="paso_1_presupuesto" data-gtm-step-index="1">
+          <div class="step-circle"><span>1</span></div>
+          <h3>Presupuesto</h3>
+          <p>Contactanos y especificanos los productos que necesitás fabricar. Un asesor experto te realizará un presupuesto 100% personalizado y sin cargo.</p>
+          <span class="step-tag">Sin compromiso</span>
+        </div>
+
+        <div class="step-card" data-gtm-step="paso_2_reunion" data-gtm-step-index="2">
+          <div class="step-circle"><span>2</span></div>
+          <h3>Reunión</h3>
+          <p>Si el presupuesto te cierra, gestionamos una reunión virtual o presencial para que conozcas muestras, calidades y al equipo que llevará adelante tu producción.</p>
+          <span class="step-tag">Virtual o presencial</span>
+        </div>
+
+        <div class="step-card" data-gtm-step="paso_3_muestras" data-gtm-step-index="3">
+          <div class="step-circle"><span>3</span></div>
+          <h3>Muestras</h3>
+          <p>Realizamos muestras previas a la producción para que nada quede librado al azar y estés 100% conforme con cada detalle antes de aprobar la tirada completa.</p>
+          <span class="step-tag">Con cargo</span>
+        </div>
+
+        <div class="step-card" data-gtm-step="paso_4_produccion" data-gtm-step-index="4">
+          <div class="step-circle"><span>4</span></div>
+          <h3>Producción</h3>
+          <p>Fabricamos las prendas de tu marca, nos ocupamos de todos los procesos y te entregamos el producto embolsado, planchado y listo para la venta.</p>
+          <span class="step-tag">Producto terminado</span>
+        </div>
+
+      </div>
+
+      <!-- CAPACIDADES TEXTILES -->
+      <div class="proceso-capabilities reveal">
+        <span class="capabilities-label">Procesos que dominamos</span>
+        <div class="capabilities-grid">
+
+          <div class="cap-item" data-gtm-capability="molderia" data-gtm-section="como_trabajamos">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+            <div class="cap-text">
+              <h4>Moldería</h4>
+              <p>Desarrollo de moldes técnicos y progresión de talles con precisión industrial. Base de toda producción de calidad.</p>
+            </div>
+          </div>
+
+          <div class="cap-item" data-gtm-capability="corte_confeccion" data-gtm-section="como_trabajamos">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+              </svg>
+            </div>
+            <div class="cap-text">
+              <h4>Corte & Confección</h4>
+              <p>Maquinaria de última generación y operarios especializados. Capacidad para pequeñas tiradas y grandes volúmenes.</p>
+            </div>
+          </div>
+
+          <div class="cap-item" data-gtm-capability="estampados" data-gtm-section="como_trabajamos">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
+              </svg>
+            </div>
+            <div class="cap-text">
+              <h4>Estampados</h4>
+              <p>Sublimación, serigrafía y transfer digital. Colores sólidos y definidos que no pierden intensidad con el lavado.</p>
+            </div>
+          </div>
+
+          <div class="cap-item" data-gtm-capability="bordados" data-gtm-section="como_trabajamos">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/><path d="M8 12s1.5-2 4-2 4 2 4 2"/>
+                <line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>
+              </svg>
+            </div>
+            <div class="cap-text">
+              <h4>Bordados</h4>
+              <p>Bordados a máquina de alta definición para logos, parches y detalles que elevan el valor percibido de cada prenda.</p>
+            </div>
+          </div>
+
+          <div class="cap-item" data-gtm-capability="procesado" data-gtm-section="como_trabajamos">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/>
+                <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+              </svg>
+            </div>
+            <div class="cap-text">
+              <h4>Procesado</h4>
+              <p>Lavados especiales, suavizados, stonewash y acabados textiles que le dan a la prenda su textura y caída final.</p>
+            </div>
+          </div>
+
+          <div class="cap-item" data-gtm-capability="etiquetado_packaging" data-gtm-section="como_trabajamos">
+            <div class="cap-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+                <line x1="7" y1="7" x2="7.01" y2="7"/>
+              </svg>
+            </div>
+            <div class="cap-text">
+              <h4>Etiquetado & Packaging</h4>
+              <p>Etiquetas de marca, hangtags y embolsado personalizado. Producto listo para exhibición o envío al cliente final.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BOTTOM BANNER -->
+      <div class="proceso-bottom reveal">
+        <div class="proceso-bottom-copy">
+          <h4>¿Listo para <em>empezar?</em></h4>
+          <p>El primer presupuesto es sin cargo y sin compromiso. Tiempo mínimo de producción: 30 días.</p>
+        </div>
+        <button class="btn btn-white" onclick="openModal()"
+          data-gtm-cta="proceso_agendar"
+          data-gtm-section="como_trabajamos">
+          Agendar reunión de onboarding
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- NOSOTROS -->
+  <section id="nosotros">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image reveal">
+          <img src="https://images.unsplash.com/photo-1586495777744-4e6232bf2f91?q=80&w=900&auto=format&fit=crop" alt="Taller PRODUCTEX" loading="lazy" />
+          <div class="about-image-frame"></div>
+        </div>
+        <div class="about-content reveal reveal-delay-1">
+          <span class="tag">Quiénes Somos</span>
+          <h2 class="section-title">La excelencia textil <em>como estándar.</em></h2>
+          <p>En PRODUCTEX combinamos décadas de experiencia en la industria textil argentina con metodologías de producción de vanguardia. Cada prenda que sale de nuestro taller es el resultado de un proceso meticuloso.</p>
+          <p>Trabajamos con marcas emergentes y consolidadas que comparten nuestra visión: que la calidad no es un diferencial, es el mínimo exigible.</p>
+          <div class="stats-row">
+            <div class="stat-item">
+              <span class="stat-num">12+</span>
+              <span class="stat-label">Años de Experiencia</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">200+</span>
+              <span class="stat-label">Marcas Producidas</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">100K+</span>
+              <span class="stat-label">Prendas por Año</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-box reveal">
+        <span class="tag" style="margin-bottom:20px">Próximo Paso</span>
+        <h2>¿Listo para escalar <em>tu producción?</em></h2>
+        <p>Hablemos sobre tu próximo proyecto. Contamos con la capacidad, el equipo y la experiencia para llevarlo al siguiente nivel.</p>
+        <div class="cta-actions">
+          <a href="https://api.whatsapp.com/send/?phone=5491154731466&text&type=phone_number&app_absent=0" target="_blank" class="btn btn-white">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            Iniciar Conversación
+          </a>
+          <button class="btn btn-outline" onclick="openModal()">Agendar una Reunión</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="logo">PRODUCTEX</span>
+          <p>Excelencia textil desde Buenos Aires para el mundo. Producción integral de indumentaria con calidad premium.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Navegación</h4>
+          <a href="#servicios">Servicios</a>
+          <a href="#proceso">Cómo trabajamos</a>
+          <a href="#nosotros">Nosotros</a>
+        </div>
+        <div class="footer-links">
+          <h4>Contacto</h4>
+          <a href="https://api.whatsapp.com/send/?phone=5491154731466&text&type=phone_number&app_absent=0" target="_blank">WhatsApp</a>
+          <button onclick="openModal()">Agendar Reunión</button>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2025 PRODUCTEX. Todos los derechos reservados.</p>
+        <p>Buenos Aires, Argentina</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Navbar scroll ──
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 80);
+    }, { passive: true });
+
+    // ── Scroll Reveal ──
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ── Mobile menu ──
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    burger.addEventListener('click', () => {
+      burger.classList.toggle('active');
+      mobileMenu.classList.toggle('open');
+      document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+    });
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        burger.classList.remove('active');
+        mobileMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // ── Smooth scroll ──
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href === '#') return;
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // ── Hero reveal ──
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+      }, 200);
+    });
+
+    // ── MODAL ──
+    function openModal() {
+      document.getElementById('modal-overlay').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      document.getElementById('modal-overlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function handleOverlayClick(e) {
+      if (e.target === document.getElementById('modal-overlay')) closeModal();
+    }
+    function closeMobileAndOpenModal() {
+      burger.classList.remove('active');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+      setTimeout(openModal, 100);
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // ── Availability chips ──
+    document.querySelectorAll('.avail-chip').forEach(chip => {
+      chip.addEventListener('click', () => chip.classList.toggle('selected'));
+    });
+
+    // ── FORM VALIDATION & SUBMIT ──
+    function validateField(id, condition) {
+      const field = document.getElementById('field-' + id);
+      if (!field) return condition;
+      if (!condition) {
+        field.classList.add('error');
+        return false;
+      } else {
+        field.classList.remove('error');
+        return true;
+      }
+    }
+
+    function submitForm() {
+      const nombre   = document.getElementById('nombre').value.trim();
+      const apellido = document.getElementById('apellido').value.trim();
+      const mail     = document.getElementById('mail').value.trim();
+      const marca    = document.getElementById('marca').value.trim();
+      const decision = document.getElementById('decision').value.trim();
+      const problema = document.getElementById('problema').value.trim();
+      const franja   = document.getElementById('franja').value;
+      const mailReg  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      let valid = true;
+      valid = validateField('nombre',   nombre   !== '')  && valid;
+      valid = validateField('apellido', apellido !== '')  && valid;
+      valid = validateField('mail',     mailReg.test(mail)) && valid;
+      valid = validateField('marca',    marca    !== '')  && valid;
+      valid = validateField('decision', decision !== '')  && valid;
+      valid = validateField('problema', problema !== '')  && valid;
+      valid = validateField('franja',   franja   !== '')  && valid;
+
+      if (!valid) return;
+
+      // Gather selected days
+      const dias = Array.from(document.querySelectorAll('.avail-chip.selected')).map(c => c.dataset.val);
+
+      // Build data object (ready to send to your backend / email service)
+      const formData = {
+        nombre, apellido, mail, marca,
+        decision, problema,
+        disponibilidad: { dias: dias.length ? dias : ['A confirmar'], franja },
+        notas: document.getElementById('notas').value.trim(),
+        timestamp: new Date().toISOString()
+      };
+
+      console.log('PRODUCTEX Onboarding Form:', formData);
+      // ↑ Replace with fetch() to your backend / Formspree / EmailJS
+
+      // Show success
+      document.getElementById('form-container').style.display = 'none';
+      document.getElementById('form-success').classList.add('show');
+    }
+  </script>
+</body>
+</html>
