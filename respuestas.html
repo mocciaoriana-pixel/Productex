@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRODUCTEX — Solicitud Recibida</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black: #000000;
+      --grey: #2e2e2e;
+      --grey-light: #3e3e3e;
+      --white: #ffffff;
+      --white-dim: rgba(255,255,255,0.6);
+      --white-faint: rgba(255,255,255,0.08);
+      --font-display: 'Cormorant Garamond', serif;
+      --font-body: 'Montserrat', sans-serif;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--grey); }
+
+    .container { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+    .tag {
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.4);
+      font-weight: 500;
+    }
+
+    /* ─── NAVBAR ─── */
+    #navbar {
+      position: fixed; width: 100%; top: 0; z-index: 1000;
+      padding: 28px 0;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-inner { display: flex; justify-content: space-between; align-items: center; padding: 0 5%; }
+    .logo { font-family: var(--font-body); font-weight: 600; letter-spacing: 6px; color: var(--white); text-decoration: none; font-size: 1.05rem; }
+
+    /* ─── MAIN ─── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background watermark */
+    main::before {
+      content: 'PRODUCTEX';
+      position: absolute;
+      font-family: var(--font-display);
+      font-size: clamp(6rem, 18vw, 16rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.025);
+      white-space: nowrap;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      letter-spacing: -5px;
+      user-select: none;
+    }
+
+    .success-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    /* ─── TOP STRIP ─── */
+    .success-top {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 64px;
+      animation: fadeUp 0.8s var(--ease) forwards;
+      opacity: 0;
+      animation-delay: 0.1s;
+    }
+
+    .check-circle {
+      width: 56px; height: 56px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      animation: popIn 0.6s var(--ease) 0.3s both;
+    }
+    .check-circle svg { color: rgba(255,255,255,0.8); }
+
+    .success-top-text .tag { margin-bottom: 4px; display: block; }
+    .success-top-text span.status {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.3);
+      font-weight: 300;
+      letter-spacing: 1px;
+    }
+
+    /* ─── HERO TEXT ─── */
+    .success-hero {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 52px;
+      margin-bottom: 64px;
+      animation: fadeUp 0.8s var(--ease) 0.2s both;
+    }
+    .success-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.0;
+      margin-bottom: 24px;
+      letter-spacing: -0.5px;
+    }
+    .success-hero h1 em { font-style: italic; }
+    .success-hero p {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      line-height: 2;
+      font-weight: 300;
+      max-width: 520px;
+      letter-spacing: 0.3px;
+    }
+
+    /* ─── DATA CARD ─── */
+    .data-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 44px 48px;
+      margin-bottom: 48px;
+      animation: fadeUp 0.8s var(--ease) 0.35s both;
+    }
+    .data-card-label {
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 32px;
+      display: block;
+    }
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px 48px;
+    }
+    .data-item label {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .data-item .data-value {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.75);
+      font-weight: 300;
+      line-height: 1.7;
+    }
+    .data-item.full { grid-column: 1 / -1; }
+    .data-item .data-value.empty { color: rgba(255,255,255,0.2); font-style: italic; }
+
+    /* Tags de días */
+    .day-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .day-tag {
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 4px 12px;
+      font-size: 0.68rem;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.5);
+      font-weight: 400;
+    }
+
+    /* ─── PRÓXIMOS PASOS ─── */
+    .next-steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      border: 1px solid rgba(255,255,255,0.07);
+      margin-bottom: 56px;
+      animation: fadeUp 0.8s var(--ease) 0.5s both;
+    }
+    .next-step {
+      padding: 36px 32px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .next-step:last-child { border-right: none; }
+    .next-step .step-num {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: rgba(255,255,255,0.08);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .next-step h4 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .next-step p {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.85;
+      font-weight: 300;
+    }
+
+    /* ─── ACTIONS ─── */
+    .success-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s var(--ease) 0.6s both;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 17px 36px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.5s var(--ease);
+      font-family: var(--font-body);
+      cursor: pointer;
+      border: none;
+    }
+    .btn-white { background: var(--white); color: var(--black); }
+    .btn-white:hover { background: #ddd; }
+    .btn-outline { border: 1px solid rgba(255,255,255,0.4); color: var(--white); background: transparent; }
+    .btn-outline:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      background: var(--grey);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 40px 0;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .footer-inner p {
+      font-size: 0.68rem;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 1px;
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .container { padding: 0 24px; }
+      main { padding: 120px 24px 60px; }
+      .data-card { padding: 32px 28px; }
+      .data-grid { grid-template-columns: 1fr; gap: 20px; }
+      .next-steps { grid-template-columns: 1fr; }
+      .next-step { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .next-step:last-child { border-bottom: none; }
+      .success-actions { flex-direction: column; align-items: flex-start; }
+      .btn { width: 100%; justify-content: center; }
+    }
+    @media (max-width: 480px) {
+      .success-hero h1 { font-size: 2.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="logo">PRODUCTEX</a>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main>
+    <div class="success-wrapper">
+
+      <!-- TOP -->
+      <div class="success-top">
+        <div class="check-circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div class="success-top-text">
+          <span class="tag">Solicitud enviada · Onboarding</span>
+          <span class="status">En revisión por nuestro equipo</span>
+        </div>
+      </div>
+
+      <!-- HERO TEXT -->
+      <div class="success-hero">
+        <h1>¡Gracias por <em>escribirnos!</em></h1>
+        <p>Recibimos tu solicitud correctamente. Nuestro equipo se pondrá en contacto a la brevedad para confirmar la fecha y hora de tu reunión de onboarding.</p>
+      </div>
+
+      <!-- DATA SUMMARY CARD -->
+      <div class="data-card">
+        <span class="data-card-label">Resumen de tu solicitud</span>
+        <div class="data-grid" id="data-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- PRÓXIMOS PASOS -->
+      <div class="next-steps">
+        <div class="next-step">
+          <div class="step-num">01</div>
+          <h4>Revisión</h4>
+          <p>Nuestro equipo revisará tu solicitud y evaluará los detalles de tu proyecto en las próximas horas.</p>
+        </div>
+        <div class="next-step">
+          <div class="step-num">02</div>
+          <h4>Contacto</h4>
+          <p>Te contactaremos por mail o WhatsApp en menos de 24 hs para confirmar fecha y hora de la reunión.</p>
+        </div>
+        <div class="next-step">
+          <div class="step-num">03</div>
+          <h4>Reunión</h4>
+          <p>Conocé al equipo, mirá muestras de calidad y definamos juntos cómo producir tu marca.</p>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="success-actions">
+        <a href="https://api.whatsapp.com/send/?phone=5491154731466&text&type=phone_number&app_absent=0" target="_blank" class="btn btn-white">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          Escribirnos por WhatsApp
+        </a>
+        <a href="index.html" class="btn btn-outline">Volver al inicio</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <p>©️ 2025 PRODUCTEX. Todos los derechos reservados.</p>
+        <p>Buenos Aires, Argentina</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Read data from sessionStorage (set by index.html on submit) ──
+    const raw = sessionStorage.getItem('productex_form');
+    const data = raw ? JSON.parse(raw) : null;
+
+    const grid = document.getElementById('data-grid');
+
+    function val(v) {
+      return v ? `<span class="data-value">${v}</span>` : `<span class="data-value empty">—</span>`;
+    }
+
+    if (data) {
+      const dias = data.disponibilidad?.dias?.length
+        ? data.disponibilidad.dias.map(d => `<span class="day-tag">${d}</span>`).join('')
+        : '<span class="data-value empty">A confirmar</span>';
+
+      grid.innerHTML = `
+        <div class="data-item">
+          <label>Nombre</label>
+          ${val(data.nombre + ' ' + data.apellido)}
+        </div>
+        <div class="data-item">
+          <label>Correo electrónico</label>
+          ${val(data.mail)}
+        </div>
+        <div class="data-item">
+          <label>Marca / Emprendimiento</label>
+          ${val(data.marca)}
+        </div>
+        <div class="data-item">
+          <label>Franja horaria</label>
+          ${val(data.disponibilidad?.franja)}
+        </div>
+        <div class="data-item full">
+          <label>Días disponibles</label>
+          <div class="day-tags">${dias}</div>
+        </div>
+        <div class="data-item full">
+          <label>¿Por qué PRODUCTEX?</label>
+          ${val(data.decision)}
+        </div>
+        <div class="data-item full">
+          <label>Problema principal</label>
+          ${val(data.problema)}
+        </div>
+        ${data.notas ? `<div class="data-item full"><label>Notas adicionales</label>${val(data.notas)}</div>` : ''}
+      `;
+
+      // Clean up after reading
+      sessionStorage.removeItem('productex_form');
+
+    } else {
+      // No data — show generic message
+      grid.innerHTML = `
+        <div class="data-item full">
+          <label>Estado</label>
+          <span class="data-value">Solicitud recibida correctamente.</span>
+        </div>
+      `;
+    }
+  </script>
+
+</body>
+</html>

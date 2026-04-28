@@ -4,13 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PRODUCTEX — Producción Integral de Indumentaria</title>
-  <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
   })(window,document,'script','dataLayer','GTM-TTH98RMD');</script>
-  <!-- End Google Tag Manager -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
@@ -333,7 +331,6 @@
       gap: 20px;
     }
 
-    /* availability grid */
     .avail-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -393,7 +390,7 @@
       line-height: 1.6;
     }
 
-    /* ─── SUCCESS STATE ─── */
+    /* ─── SUCCESS STATE (breve, antes del redirect) ─── */
     .form-success {
       display: none;
       padding: 60px 52px;
@@ -444,8 +441,6 @@
       position: relative;
       overflow: hidden;
     }
-
-    /* Faint vertical line decoration */
     #proceso::before {
       content: '';
       position: absolute;
@@ -455,7 +450,6 @@
       background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.05) 20%, rgba(255,255,255,0.05) 80%, transparent);
       pointer-events: none;
     }
-
     .proceso-header {
       display: flex;
       justify-content: space-between;
@@ -472,8 +466,6 @@
       line-height: 2;
       font-weight: 300;
     }
-
-    /* ── 4 PASOS (timeline horizontal) ── */
     .proceso-steps {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -482,8 +474,6 @@
       margin-bottom: 100px;
       position: relative;
     }
-
-    /* connecting line across top */
     .proceso-steps::before {
       content: '';
       position: absolute;
@@ -495,7 +485,6 @@
       pointer-events: none;
       z-index: 0;
     }
-
     .step-card {
       padding: 44px 36px 40px;
       border-right: 1px solid rgba(255,255,255,0.07);
@@ -505,7 +494,6 @@
     }
     .step-card:last-child { border-right: none; }
     .step-card:hover { background: rgba(255,255,255,0.03); }
-
     .step-circle {
       width: 44px; height: 44px;
       border: 1px solid rgba(255,255,255,0.2);
@@ -519,125 +507,32 @@
       transition: border-color 0.4s, background 0.4s;
       background: var(--black);
     }
-    .step-card:hover .step-circle {
-      border-color: rgba(255,255,255,0.6);
-      background: rgba(255,255,255,0.06);
-    }
-    .step-circle span {
-      font-family: var(--font-display);
-      font-size: 1.1rem;
-      font-weight: 300;
-      color: rgba(255,255,255,0.5);
-    }
+    .step-card:hover .step-circle { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); }
+    .step-circle span { font-family: var(--font-display); font-size: 1.1rem; font-weight: 300; color: rgba(255,255,255,0.5); }
     .step-card:hover .step-circle span { color: var(--white); }
-
-    .step-card h3 {
-      font-family: var(--font-display);
-      font-size: 1.35rem;
-      font-weight: 400;
-      margin-bottom: 12px;
-      letter-spacing: 0.3px;
-    }
-    .step-card p {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.45);
-      line-height: 1.9;
-      font-weight: 300;
-    }
-    .step-tag {
-      display: inline-block;
-      margin-top: 20px;
-      font-size: 0.6rem;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 5px 10px;
-    }
-
-    /* ── CAPACIDADES (proceso textil detallado) ── */
-    .proceso-capabilities {
-      margin-bottom: 80px;
-    }
-    .capabilities-label {
-      font-size: 0.6rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.2);
-      margin-bottom: 40px;
-      display: block;
-    }
-    .capabilities-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1px;
-      background: rgba(255,255,255,0.06);
-    }
-    .cap-item {
-      background: var(--black);
-      padding: 36px 32px;
-      display: flex;
-      gap: 20px;
-      align-items: flex-start;
-      transition: background 0.3s var(--ease);
-      /* GTM-friendly: each item has data-process-step */
-    }
+    .step-card h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 400; margin-bottom: 12px; letter-spacing: 0.3px; }
+    .step-card p { font-size: 0.75rem; color: rgba(255,255,255,0.45); line-height: 1.9; font-weight: 300; }
+    .step-tag { display: inline-block; margin-top: 20px; font-size: 0.6rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.1); padding: 5px 10px; }
+    .proceso-capabilities { margin-bottom: 80px; }
+    .capabilities-label { font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.2); margin-bottom: 40px; display: block; }
+    .capabilities-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,0.06); }
+    .cap-item { background: var(--black); padding: 36px 32px; display: flex; gap: 20px; align-items: flex-start; transition: background 0.3s var(--ease); }
     .cap-item:hover { background: rgba(255,255,255,0.03); }
-    .cap-icon {
-      width: 36px; height: 36px;
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-top: 2px;
-      opacity: 0.5;
-      transition: opacity 0.3s;
-    }
+    .cap-icon { width: 36px; height: 36px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 2px; opacity: 0.5; transition: opacity 0.3s; }
     .cap-item:hover .cap-icon { opacity: 0.9; }
     .cap-icon svg { width: 20px; height: 20px; color: var(--white); }
-    .cap-text h4 {
-      font-family: var(--font-display);
-      font-size: 1.15rem;
-      font-weight: 400;
-      margin-bottom: 6px;
-      letter-spacing: 0.3px;
-    }
-    .cap-text p {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.4);
-      line-height: 1.85;
-      font-weight: 300;
-    }
-
-    /* ── PROCESO BOTTOM BANNER ── */
-    .proceso-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 32px;
-      padding: 40px 48px;
-      border: 1px solid rgba(255,255,255,0.08);
-      flex-wrap: wrap;
-    }
-    .proceso-bottom-copy h4 {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      font-weight: 300;
-      margin-bottom: 6px;
-    }
+    .cap-text h4 { font-family: var(--font-display); font-size: 1.15rem; font-weight: 400; margin-bottom: 6px; letter-spacing: 0.3px; }
+    .cap-text p { font-size: 0.72rem; color: rgba(255,255,255,0.4); line-height: 1.85; font-weight: 300; }
+    .proceso-bottom { display: flex; align-items: center; justify-content: space-between; gap: 32px; padding: 40px 48px; border: 1px solid rgba(255,255,255,0.08); flex-wrap: wrap; }
+    .proceso-bottom-copy h4 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 300; margin-bottom: 6px; }
     .proceso-bottom-copy h4 em { font-style: italic; }
-    .proceso-bottom-copy p {
-      font-size: 0.75rem;
-      color: rgba(255,255,255,0.35);
-      font-weight: 300;
-    }
+    .proceso-bottom-copy p { font-size: 0.75rem; color: rgba(255,255,255,0.35); font-weight: 300; }
 
     /* ─── RESPONSIVE proceso ─── */
     @media (max-width: 1024px) {
       .proceso-steps { grid-template-columns: repeat(2, 1fr); }
       .step-card:nth-child(2) { border-right: none; }
-      .step-card:nth-child(1),
-      .step-card:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .step-card:nth-child(1), .step-card:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,0.07); }
       .proceso-steps::before { display: none; }
       .capabilities-grid { grid-template-columns: repeat(2, 1fr); }
     }
@@ -645,15 +540,14 @@
       #proceso { padding: 100px 0; }
       .proceso-steps { grid-template-columns: 1fr; }
       .step-card { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.07); }
-      .step-card:nth-child(1),
-      .step-card:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .step-card:nth-child(1), .step-card:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,0.07); }
       .capabilities-grid { grid-template-columns: 1fr; }
       .proceso-header { flex-direction: column; align-items: flex-start; }
       .proceso-bottom { flex-direction: column; align-items: flex-start; padding: 32px 28px; }
       #proceso::before { display: none; }
     }
 
-    /* ─── RESPONSIVE ─── */
+    /* ─── RESPONSIVE general ─── */
     @media (max-width: 1024px) {
       .services-grid { grid-template-columns: 1fr 1fr; }
       .service-card:nth-child(2) { border-right: none; }
@@ -697,10 +591,8 @@
   </style>
 </head>
 <body>
-  <!-- Google Tag Manager (noscript) -->
   <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TTH98RMD"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-  <!-- End Google Tag Manager (noscript) -->
 
   <!-- NAVBAR -->
   <nav id="navbar">
@@ -734,7 +626,7 @@
     <div class="modal" id="modal">
       <div id="form-container">
         <div class="modal-header">
-          <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">✕</button>
+          <button class="modal-close" onclick="closeModal()" aria-label="Cerrar">&#x2715;</button>
           <span class="tag">Primer Reunión · Onboarding</span>
           <h2>Contanos sobre <em>tu proyecto.</em></h2>
           <p>Completá el formulario y nuestro equipo se pondrá en contacto para confirmar la reunión.</p>
@@ -766,7 +658,7 @@
           <hr class="form-divider">
 
           <!-- Preguntas cualitativas -->
-          <span class="form-section-label">Tu marca & motivación</span>
+          <span class="form-section-label">Tu marca &amp; motivación</span>
 
           <div class="field" id="field-marca">
             <label for="marca">Nombre de tu marca / emprendimiento</label>
@@ -832,13 +724,13 @@
         </div><!-- /.onboarding-form -->
       </div><!-- /#form-container -->
 
-      <!-- SUCCESS STATE -->
+      <!-- SUCCESS STATE (breve antes del redirect) -->
       <div class="form-success" id="form-success">
         <div class="success-icon">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
         </div>
         <h3>¡Todo <em>listo!</em></h3>
-        <p>Recibimos tu solicitud. Nuestro equipo se pondrá en contacto a la brevedad para confirmar la fecha y hora de la reunión.</p>
+        <p>Redirigiendo a tu confirmación...</p>
       </div>
 
     </div><!-- /.modal -->
@@ -866,15 +758,15 @@
   <div class="marquee-strip">
     <div class="marquee-track">
       <span>Desarrollo de Moldes</span><span class="dot">·</span>
-      <span>Corte & Confección</span><span class="dot">·</span>
+      <span>Corte &amp; Confección</span><span class="dot">·</span>
       <span>Control de Calidad</span><span class="dot">·</span>
-      <span>Etiquetado & Packaging</span><span class="dot">·</span>
+      <span>Etiquetado &amp; Packaging</span><span class="dot">·</span>
       <span>Producción Premium</span><span class="dot">·</span>
       <span>Buenos Aires, Argentina</span><span class="dot">·</span>
       <span>Desarrollo de Moldes</span><span class="dot">·</span>
-      <span>Corte & Confección</span><span class="dot">·</span>
+      <span>Corte &amp; Confección</span><span class="dot">·</span>
       <span>Control de Calidad</span><span class="dot">·</span>
-      <span>Etiquetado & Packaging</span><span class="dot">·</span>
+      <span>Etiquetado &amp; Packaging</span><span class="dot">·</span>
       <span>Producción Premium</span><span class="dot">·</span>
       <span>Buenos Aires, Argentina</span><span class="dot">·</span>
     </div>
@@ -890,12 +782,12 @@
       <div class="services-grid">
         <div class="service-card reveal">
           <div class="num">01</div>
-          <h3>Desarrollo & Moldería</h3>
+          <h3>Desarrollo &amp; Moldería</h3>
           <p>Transformamos tus ideas en moldes técnicos precisos y escalados perfectos. Cada patrón es desarrollado con rigor artesanal y precisión industrial.</p>
         </div>
         <div class="service-card reveal reveal-delay-1">
           <div class="num">02</div>
-          <h3>Corte & Confección</h3>
+          <h3>Corte &amp; Confección</h3>
           <p>Maquinaria de última generación y mano de obra experta para producciones impecables. Capacidad para pequeñas tiradas y grandes volúmenes.</p>
         </div>
         <div class="service-card reveal reveal-delay-2">
@@ -923,32 +815,7 @@
     </div>
   </div>
 
-  <!-- NOSOTROS -->
-  <!--
-    GTM GUIDE — sección #proceso
-    ─────────────────────────────────────────────────────────────────────
-    Cada elemento clave tiene un atributo data-gtm-* para facilitar la
-    configuración de triggers y variables en Google Tag Manager:
-
-    SECTION VISIBILITY
-      Trigger: Element Visibility → CSS Selector: #proceso
-      → Evento sugerido: "seccion_proceso_visible"
-
-    PASO VISTO (scroll into view)
-      Trigger: Element Visibility → CSS Selector: [data-gtm-step]
-      → Variable: {{- Click Element}} → Attribute: data-gtm-step
-      → Evento sugerido: "paso_proceso_visible"
-
-    CAPACIDAD VISTA
-      Trigger: Element Visibility → CSS Selector: [data-gtm-capability]
-      → Variable: data-gtm-capability
-      → Evento sugerido: "capacidad_proceso_visible"
-
-    CTA dentro de sección
-      Trigger: Click → CSS Selector: [data-gtm-cta="proceso_agendar"]
-      → Evento sugerido: "cta_proceso_click"
-    ─────────────────────────────────────────────────────────────────────
-  -->
+  <!-- PROCESO -->
   <section id="proceso" data-gtm-section="como_trabajamos">
     <div class="container">
 
@@ -962,44 +829,36 @@
         </p>
       </div>
 
-      <!-- 4 PASOS -->
       <div class="proceso-steps reveal">
-
         <div class="step-card" data-gtm-step="paso_1_presupuesto" data-gtm-step-index="1">
           <div class="step-circle"><span>1</span></div>
           <h3>Presupuesto</h3>
           <p>Contactanos y especificanos los productos que necesitás fabricar. Un asesor experto te realizará un presupuesto 100% personalizado y sin cargo.</p>
           <span class="step-tag">Sin compromiso</span>
         </div>
-
         <div class="step-card" data-gtm-step="paso_2_reunion" data-gtm-step-index="2">
           <div class="step-circle"><span>2</span></div>
           <h3>Reunión</h3>
           <p>Si el presupuesto te cierra, gestionamos una reunión virtual o presencial para que conozcas muestras, calidades y al equipo que llevará adelante tu producción.</p>
           <span class="step-tag">Virtual o presencial</span>
         </div>
-
         <div class="step-card" data-gtm-step="paso_3_muestras" data-gtm-step-index="3">
           <div class="step-circle"><span>3</span></div>
           <h3>Muestras</h3>
           <p>Realizamos muestras previas a la producción para que nada quede librado al azar y estés 100% conforme con cada detalle antes de aprobar la tirada completa.</p>
           <span class="step-tag">Con cargo</span>
         </div>
-
         <div class="step-card" data-gtm-step="paso_4_produccion" data-gtm-step-index="4">
           <div class="step-circle"><span>4</span></div>
           <h3>Producción</h3>
           <p>Fabricamos las prendas de tu marca, nos ocupamos de todos los procesos y te entregamos el producto embolsado, planchado y listo para la venta.</p>
           <span class="step-tag">Producto terminado</span>
         </div>
-
       </div>
 
-      <!-- CAPACIDADES TEXTILES -->
       <div class="proceso-capabilities reveal">
         <span class="capabilities-label">Procesos que dominamos</span>
         <div class="capabilities-grid">
-
           <div class="cap-item" data-gtm-capability="molderia" data-gtm-section="como_trabajamos">
             <div class="cap-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
@@ -1011,7 +870,6 @@
               <p>Desarrollo de moldes técnicos y progresión de talles con precisión industrial. Base de toda producción de calidad.</p>
             </div>
           </div>
-
           <div class="cap-item" data-gtm-capability="corte_confeccion" data-gtm-section="como_trabajamos">
             <div class="cap-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
@@ -1021,11 +879,10 @@
               </svg>
             </div>
             <div class="cap-text">
-              <h4>Corte & Confección</h4>
+              <h4>Corte &amp; Confección</h4>
               <p>Maquinaria de última generación y operarios especializados. Capacidad para pequeñas tiradas y grandes volúmenes.</p>
             </div>
           </div>
-
           <div class="cap-item" data-gtm-capability="estampados" data-gtm-section="como_trabajamos">
             <div class="cap-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
@@ -1037,7 +894,6 @@
               <p>Sublimación, serigrafía y transfer digital. Colores sólidos y definidos que no pierden intensidad con el lavado.</p>
             </div>
           </div>
-
           <div class="cap-item" data-gtm-capability="bordados" data-gtm-section="como_trabajamos">
             <div class="cap-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
@@ -1050,7 +906,6 @@
               <p>Bordados a máquina de alta definición para logos, parches y detalles que elevan el valor percibido de cada prenda.</p>
             </div>
           </div>
-
           <div class="cap-item" data-gtm-capability="procesado" data-gtm-section="como_trabajamos">
             <div class="cap-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
@@ -1063,7 +918,6 @@
               <p>Lavados especiales, suavizados, stonewash y acabados textiles que le dan a la prenda su textura y caída final.</p>
             </div>
           </div>
-
           <div class="cap-item" data-gtm-capability="etiquetado_packaging" data-gtm-section="como_trabajamos">
             <div class="cap-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
@@ -1072,15 +926,13 @@
               </svg>
             </div>
             <div class="cap-text">
-              <h4>Etiquetado & Packaging</h4>
+              <h4>Etiquetado &amp; Packaging</h4>
               <p>Etiquetas de marca, hangtags y embolsado personalizado. Producto listo para exhibición o envío al cliente final.</p>
             </div>
           </div>
-
         </div>
       </div>
 
-      <!-- BOTTOM BANNER -->
       <div class="proceso-bottom reveal">
         <div class="proceso-bottom-copy">
           <h4>¿Listo para <em>empezar?</em></h4>
@@ -1167,7 +1019,7 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2025 PRODUCTEX. Todos los derechos reservados.</p>
+        <p>&#169; 2025 PRODUCTEX. Todos los derechos reservados.</p>
         <p>Buenos Aires, Argentina</p>
       </div>
     </div>
@@ -1276,20 +1128,20 @@
       const mailReg  = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       let valid = true;
-      valid = validateField('nombre',   nombre   !== '')  && valid;
-      valid = validateField('apellido', apellido !== '')  && valid;
-      valid = validateField('mail',     mailReg.test(mail)) && valid;
-      valid = validateField('marca',    marca    !== '')  && valid;
-      valid = validateField('decision', decision !== '')  && valid;
-      valid = validateField('problema', problema !== '')  && valid;
-      valid = validateField('franja',   franja   !== '')  && valid;
+      valid = validateField('nombre',   nombre   !== '')        && valid;
+      valid = validateField('apellido', apellido !== '')        && valid;
+      valid = validateField('mail',     mailReg.test(mail))    && valid;
+      valid = validateField('marca',    marca    !== '')        && valid;
+      valid = validateField('decision', decision !== '')        && valid;
+      valid = validateField('problema', problema !== '')        && valid;
+      valid = validateField('franja',   franja   !== '')        && valid;
 
       if (!valid) return;
 
-      // Gather selected days
+      // Reunir días seleccionados
       const dias = Array.from(document.querySelectorAll('.avail-chip.selected')).map(c => c.dataset.val);
 
-      // Build data object (ready to send to your backend / email service)
+      // Armar objeto de datos
       const formData = {
         nombre, apellido, mail, marca,
         decision, problema,
@@ -1298,12 +1150,16 @@
         timestamp: new Date().toISOString()
       };
 
-      console.log('PRODUCTEX Onboarding Form:', formData);
-      // ↑ Replace with fetch() to your backend / Formspree / EmailJS
+      // Guardar en sessionStorage para que respuestas.html lo muestre
+      sessionStorage.setItem('productex_form', JSON.stringify(formData));
 
-      // Show success
+      // Mostrar estado de éxito brevemente y redirigir
       document.getElementById('form-container').style.display = 'none';
       document.getElementById('form-success').classList.add('show');
+
+      setTimeout(function() {
+        window.location.href = 'respuestas.html';
+      }, 900);
     }
   </script>
 </body>
